@@ -319,14 +319,3 @@ class BasicNavigatorFoxy(Node):
                 time.sleep(0.1)
 
 
-def main() :
-    rclpy.init()
-
-    navigator = BasicNavigatorFoxy()
-
-    navigator.patrol_demo()
-
-    exit(0)
-
-if __name__ == '__main__':
-    main()
