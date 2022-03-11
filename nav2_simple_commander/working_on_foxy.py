@@ -301,11 +301,14 @@ class BasicNavigatorFoxy(Node):
         self.get_logger().debug(msg)
         return
 
-    def patrol_demo(self, security_route) :
+    def patrol_demo(self, security_route,quaternion_x,quaternion_y,quaternion_w,quaternion_z) :
         pose = PoseStamped()
         pose.header.frame_id = 'map'
         pose.header.stamp = self.get_clock().now().to_msg()
-        pose.pose.orientation.w = 1.0
+        pose.pose.orientation.w=quaternion_w
+        pose.pose.orientation.x=quaternion_x
+        pose.pose.orientation.y=quaternion_y
+        pose.pose.orientation.z=quaternion_z
         for pt in security_route:
             pose.pose.position.x = pt[0]
             pose.pose.position.y = pt[1]
