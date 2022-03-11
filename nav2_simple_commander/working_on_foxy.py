@@ -301,12 +301,7 @@ class BasicNavigatorFoxy(Node):
         self.get_logger().debug(msg)
         return
 
-    def patrol_demo(self) :
-        security_route = [
-            [-0.138, 0.462],
-            [3.08, 2.6],
-            [2.46, -0.564],
-            [1.96, 0.591]]
+    def patrol_demo(self, security_route) :
         pose = PoseStamped()
         pose.header.frame_id = 'map'
         pose.header.stamp = self.get_clock().now().to_msg()

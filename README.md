@@ -21,7 +21,7 @@ Pour exécuter le programme :
 - cd ~/turtlebot3_ws
 - colcon build --symlink-install
 - source ~/.bashrc
-- ros2 run nav2_simple_commander working_on_foxy
+- ros2 run nav2_simple_commander main_naviguation_goal (si ça ne marche pas, faire un run dans VS code de main_nabiguation_goal)
 
 -----
 
