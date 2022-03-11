@@ -11,12 +11,13 @@ Pour exécuter le programme :
 
 - à cloner dans ~/turtlebot3_ws/src
 - ouvrir Gazebo et Rviz
-  - CTRL+SHIT+T
+  - CTRL+ALT+T
   - export TURTLEBOT3_MODEL=burger
   - ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
-  - CTRL+SHIT+T
+  - CTRL+ALT+T
   - export TURTLEBOT3_MODEL=burger
   - ros2 launch turtlebot3_navigation2 navigation2.launch.py use_sim_time:=True map:=$HOME/map.yaml
+- CTRL+ALT+T
 - cd ~/turtlebot3_ws
 - colcon build --symlink-install
 - source ~/.bashrc
