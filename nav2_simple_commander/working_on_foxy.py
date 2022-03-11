@@ -301,7 +301,7 @@ class BasicNavigatorFoxy(Node):
         self.get_logger().debug(msg)
         return
 
-    def patrol_demo(self, security_route,quaternion_x,quaternion_y,quaternion_w,quaternion_z) :
+    def applicate_coor(self, coor,quaternion_x,quaternion_y,quaternion_w,quaternion_z) :
         pose = PoseStamped()
         pose.header.frame_id = 'map'
         pose.header.stamp = self.get_clock().now().to_msg()
@@ -309,11 +309,15 @@ class BasicNavigatorFoxy(Node):
         pose.pose.orientation.x=quaternion_x
         pose.pose.orientation.y=quaternion_y
         pose.pose.orientation.z=quaternion_z
-        for pt in security_route:
-            pose.pose.position.x = pt[0]
-            pose.pose.position.y = pt[1]
-            self.goToPose(pose)
-            while not self.isNavComplete():
-                time.sleep(0.1)
+        #si on doit passer par plusieurs points, pas necessaire pour le naviguation_goal
+        # for pt in security_route:
+        #     pose.pose.position.x = pt[0]
+        #     pose.pose.position.y = pt[1]
+        #     self.goToPose(pose)
+        pose.pose.position.x = coor[0]
+        pose.pose.position.y = coor[1]
+        self.goToPose(pose)
+        while not self.isNavComplete():
+            time.sleep(0.1)
 
 

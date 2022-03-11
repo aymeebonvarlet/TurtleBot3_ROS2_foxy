@@ -1,9 +1,10 @@
 import working_on_foxy as wf
-import rclpy
+
 
 import numpy as np # Scientific computing library for Python
  
-def get_quaternion_from_euler(roll, pitch, yaw):
+ #fonction qui permet d'obtenir les valeurs quaternion pour la rotation
+def _get_quaternion_from_euler(roll, pitch, yaw):
   """
   Convert an Euler angle to a quaternion.
    
@@ -22,23 +23,13 @@ def get_quaternion_from_euler(roll, pitch, yaw):
  
   return [qx, qy, qz, qw]
 
-def main() :
-    rclpy.init()
-    t=get_quaternion_from_euler(0.0,0.0,0.0)
+def navigation_goal(x,y,theta):
+    #On tourne que sur l'axe yaw, donc roll=pitch=0.0
+    t=_get_quaternion_from_euler(roll=0.0,pitch=0.0,yaw=theta)
     qx=t[0]
     qy=t[1]
     qz=t[2]
     qw=t[3]
     
     navigator = wf.BasicNavigatorFoxy()
-    security_route = [
-            [2.41, 2.28]]
-            # [3.08, 2.6],
-            # [2.46, -0.564],
-            # [1.96, 0.591]]
-    navigator.patrol_demo(security_route,quaternion_x=qx, quaternion_y=qy,quaternion_w= qw,quaternion_z= qz)
-
-    exit(0)
-
-if __name__ == '__main__':
-    main()
+    navigator.applicate_coor(coor=[x,y],quaternion_x=qx, quaternion_y=qy, quaternion_w=qw,quaternion_z=qz)
