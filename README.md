@@ -23,7 +23,6 @@ Pour exécuter le programme :
 - ros2 run nav2_simple_commander working_on_foxy
 
 -----
-***mardi 10 mars :***
 
 Récupération du code de M.FABRE qui a copié le dépot officiel : nav2_simple_commander/nav2_simple_commander/working_on_foxy.py.
 
