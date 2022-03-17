@@ -1,21 +1,8 @@
-# Copyright 2016 Open Source Robotics Foundation, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-import rclpy
 from rclpy.node import Node
-
 from sensor_msgs.msg import LaserScan
+import constants as c
+import math
 
 
 
@@ -29,25 +16,40 @@ class MinimalSubscriber(Node):
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
-
+        self.tab=[]
+        self.angle=0
+        self.angle_max=0
+        
     def listener_callback(self, msg):
-       
-        self.get_logger().info('I heard: "%s"\n' % msg.ranges)
-        self.get_logger().info('I heard: "%s"\n' % msg.angle_max)
+        #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
+        #self.get_logger().info('I heard: "%s"\n' % msg.angle_max)
+        self.tab=msg.ranges
+        self.angle_increment=msg.angle_increment
+        self.angle_max=msg.angle_max
+        #print(self.angle_max)
+        print("x,y=",self.sort_tab_ranges())
+    
+    def sort_tab_ranges(self):
+        #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
+        tab_final=[]
+        somme_x=0
+        somme_y=0
+        nbre_elt=0
+        for i,r in enumerate(self.tab):
+            #print("c.theta=",c.theta, "i= ", i*self.angle, "c.d_debut", c.d_debut, "c.dfin= ", c.d_fin, self.tab[i])
+            angle=i*self.angle_increment #en rad
+            #print("r=", r, "angle= ", angle)
+            if angle<=c.theta/2 or angle>=(self.angle_max-c.theta/2):
+                if c.d_debut<=r<=c.d_fin:
+                    x= r * math.cos(angle)
+                    y= r * math.sin(angle)
+                    somme_x+=x
+                    somme_y+=y
+                    nbre_elt+=1
+        x_final=somme_x/nbre_elt
+        y_final=somme_y/nbre_elt
+        return [x_final, y_final]
 
-def main(args=None):
-    rclpy.init(args=args)
-
-    minimal_subscriber = MinimalSubscriber()
-
-    rclpy.spin(minimal_subscriber)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    minimal_subscriber.destroy_node()
-    rclpy.shutdown()
 
 
-if __name__ == '__main__':
-    main()
+
