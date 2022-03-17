@@ -7,6 +7,7 @@ def main():
     
     rclpy.init()
     
+    #donner position en x,y, theta 
     ng.navigation_goal(x=2.41,y=2.28,theta=math.pi)
 
     exit(0)
