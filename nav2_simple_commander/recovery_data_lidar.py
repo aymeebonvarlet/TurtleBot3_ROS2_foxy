@@ -6,7 +6,7 @@ import math
 
 
 
-class MinimalSubscriber(Node):
+class Recovery_data(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
@@ -27,9 +27,9 @@ class MinimalSubscriber(Node):
         self.angle_increment=msg.angle_increment
         self.angle_max=msg.angle_max
         #print(self.angle_max)
-        print("x,y=",self.sort_tab_ranges())
+        print("x,y=",self.go_to_barrycentre)
     
-    def sort_tab_ranges(self):
+    def go_to_barrycentre(self):
         #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
         tab_final=[]
         somme_x=0
