@@ -1,4 +1,4 @@
-import working_on_foxy as wf
+import nav2_simple_commander.working_on_foxy as wf
 
 
 import numpy as np # Scientific computing library for Python
