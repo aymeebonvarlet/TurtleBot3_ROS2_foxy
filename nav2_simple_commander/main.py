@@ -1,8 +1,8 @@
-import nav2_simple_commander.navigation_goal as ng
+#import nav2_simple_commander.navigation_goal as ng
 import math
 import rclpy
 import nav2_simple_commander.follow_me as rdl
-import constants as c
+import nav2_simple_commander.constants as c
 import traceback
 from rclpy.node import Node
 
@@ -24,6 +24,7 @@ def main():
     except Exception as e:
         traceback.print_exc()
     finally:
+        rd.emergency_shutdown()
         rd.destroy_node()
         rclpy.shutdown()
     # Destroy the node explicitly

@@ -1,0 +1,97 @@
+[0.708s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install']
+[0.708s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f8b47a8b1c0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=8, paths=None, symlink_install=True, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f8b47a8b1c0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f8b47a8b700>)
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.738s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.738s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.738s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/allan/turtlebot3_ws/src/turtlbot3_project'
+[0.738s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.739s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.739s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.739s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.739s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.740s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.740s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.740s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.740s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.825s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_python' and name 'nav2_simple_commander'
+[0.825s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.825s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.825s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_args' from command line to 'None'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_target' from command line to 'None'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_clean_cache' from command line to 'False'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_clean_first' from command line to 'False'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'cmake_force_configure' from command line to 'False'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'ament_cmake_args' from command line to 'None'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'catkin_cmake_args' from command line to 'None'
+[0.926s] Level 5:colcon.colcon_core.verb:set package 'nav2_simple_commander' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.926s] DEBUG:colcon.colcon_core.verb:Building package 'nav2_simple_commander' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander', 'merge_install': False, 'path': '/home/allan/turtlebot3_ws/src/turtlbot3_project', 'symlink_install': True, 'test_result_base': None}
+[0.953s] WARNING:colcon.colcon_core.verb:Some selected packages are already built in one or more underlay workspaces:
+	'nav2_simple_commander' is in: /home/allan/turtlebot3_ws/install/nav2_simple_commander
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding nav2_simple_commander
+
+This may be promoted to an error in a future release of colcon-core.
+[0.954s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.955s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.956s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/allan/turtlebot3_ws/src/turtlbot3_project' with build type 'ament_python'
+[0.956s] Level 1:colcon.colcon_core.shell:create_environment_hook('nav2_simple_commander', 'ament_prefix_path')
+[0.997s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.998s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/ament_prefix_path.ps1'
+[1.001s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/ament_prefix_path.dsv'
+[1.002s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/ament_prefix_path.sh'
+[1.005s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.005s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.232s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/allan/turtlebot3_ws/src/turtlbot3_project'
+[1.233s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.233s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.984s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander': PYTHONPATH=/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander --editable --build-directory /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/build --no-deps install_data --install-dir /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander
+[2.408s] Level 1:colcon.colcon_core.shell:create_environment_hook('nav2_simple_commander', 'pythonpath_develop')
+[2.409s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath_develop.ps1'
+[2.410s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander' returned '0': PYTHONPATH=/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander --editable --build-directory /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/build --no-deps install_data --install-dir /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander
+[2.410s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath_develop.dsv'
+[2.410s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath_develop.sh'
+[2.437s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander' for CMake module files
+[2.438s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander' for CMake config files
+[2.439s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib'
+[2.439s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/bin'
+[2.439s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/pkgconfig/nav2_simple_commander.pc'
+[2.439s] Level 1:colcon.colcon_core.environment:checking '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages'
+[2.439s] Level 1:colcon.colcon_core.shell:create_environment_hook('nav2_simple_commander', 'pythonpath')
+[2.440s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath.ps1'
+[2.440s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath.dsv'
+[2.441s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/hook/pythonpath.sh'
+[2.441s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(nav2_simple_commander)
+[2.442s] INFO:colcon.colcon_core.shell:Creating package script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/package.ps1'
+[2.443s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/package.dsv'
+[2.443s] INFO:colcon.colcon_core.shell:Creating package script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/package.sh'
+[2.444s] INFO:colcon.colcon_core.shell:Creating package script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/package.bash'
+[2.445s] INFO:colcon.colcon_core.shell:Creating package script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander/package.zsh'
+[2.446s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/colcon-core/packages/nav2_simple_commander)
+[2.447s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.447s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.447s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.447s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.465s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.465s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.465s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.495s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.496s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/local_setup.ps1'
+[2.518s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/_local_setup_util_ps1.py'
+[2.520s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/setup.ps1'
+[2.531s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/local_setup.sh'
+[2.552s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/_local_setup_util_sh.py'
+[2.552s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/setup.sh'
+[2.555s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/local_setup.bash'
+[2.568s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/setup.bash'
+[2.570s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/local_setup.zsh'
+[2.573s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/allan/turtlebot3_ws/src/turtlbot3_project/install/setup.zsh'

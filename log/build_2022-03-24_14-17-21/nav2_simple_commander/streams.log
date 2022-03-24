@@ -1,0 +1,40 @@
+[1.028s] Invoking command in '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander': PYTHONPATH=/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander --editable --build-directory /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/build --no-deps install_data --install-dir /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander
+[1.230s] running develop
+[1.354s] running egg_info
+[1.354s] creating nav2_simple_commander.egg-info
+[1.354s] writing nav2_simple_commander.egg-info/PKG-INFO
+[1.354s] writing dependency_links to nav2_simple_commander.egg-info/dependency_links.txt
+[1.355s] writing entry points to nav2_simple_commander.egg-info/entry_points.txt
+[1.355s] writing requirements to nav2_simple_commander.egg-info/requires.txt
+[1.355s] writing top-level names to nav2_simple_commander.egg-info/top_level.txt
+[1.367s] writing manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+[1.393s] reading manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+[1.393s] writing manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+[1.422s] running build_ext
+[1.422s] Creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages/site.py
+[1.424s] Creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages/nav2-simple-commander.egg-link (link to .)
+[1.425s] Installing demo_inspection script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.425s] Installing demo_picking script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.425s] Installing demo_security script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.425s] Installing example_nav_through_poses script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.425s] Installing example_nav_to_pose script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.425s] Installing example_waypoint_follower script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.426s] Installing follow_me script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.426s] Installing main_naviguation_goal script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.426s] Installing working_on_foxy script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+[1.426s] 
+[1.426s] Installed /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander
+[1.426s] running install_data
+[1.426s] creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index
+[1.426s] creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index
+[1.427s] creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index/packages
+[1.427s] copying resource/nav2_simple_commander -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index/packages
+[1.427s] copying package.xml -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/nav_to_pose_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/warehouse.world -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/inspection_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/nav_through_poses_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/waypoint_follower_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.427s] copying launch/picking_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.428s] copying launch/security_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+[1.454s] Invoked command in '/home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander' returned '0': PYTHONPATH=/home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander --editable --build-directory /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander/build --no-deps install_data --install-dir /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander

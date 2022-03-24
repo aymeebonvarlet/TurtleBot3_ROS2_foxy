@@ -1,0 +1,38 @@
+running develop
+running egg_info
+creating nav2_simple_commander.egg-info
+writing nav2_simple_commander.egg-info/PKG-INFO
+writing dependency_links to nav2_simple_commander.egg-info/dependency_links.txt
+writing entry points to nav2_simple_commander.egg-info/entry_points.txt
+writing requirements to nav2_simple_commander.egg-info/requires.txt
+writing top-level names to nav2_simple_commander.egg-info/top_level.txt
+writing manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+reading manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+writing manifest file 'nav2_simple_commander.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages/site.py
+Creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/python3.8/site-packages/nav2-simple-commander.egg-link (link to .)
+Installing demo_inspection script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing demo_picking script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing demo_security script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing example_nav_through_poses script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing example_nav_to_pose script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing example_waypoint_follower script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing follow_me script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing main_naviguation_goal script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+Installing working_on_foxy script to /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/lib/nav2_simple_commander
+
+Installed /home/allan/turtlebot3_ws/src/turtlbot3_project/build/nav2_simple_commander
+running install_data
+creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index
+creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index
+creating /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index/packages
+copying resource/nav2_simple_commander -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/ament_index/resource_index/packages
+copying package.xml -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/nav_to_pose_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/warehouse.world -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/inspection_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/nav_through_poses_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/waypoint_follower_example_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/picking_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander
+copying launch/security_demo_launch.py -> /home/allan/turtlebot3_ws/src/turtlbot3_project/install/nav2_simple_commander/share/nav2_simple_commander

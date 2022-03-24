@@ -33,7 +33,8 @@ setup(
                 'demo_security = nav2_simple_commander.demo_security:main',
                 'working_on_foxy = nav2_simple_commander.working_on_foxy:main',
                 'main_naviguation_goal = nav2_simple_commander.main_naviguation_goal',
-                'follow_me = nav2_simple_commander.follow_me'
+                'follow_me = nav2_simple_commander.follow_me',
+                'main= nav2_simple_commander.main:main',
         ],
     },
 )
