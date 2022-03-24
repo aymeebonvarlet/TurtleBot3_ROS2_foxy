@@ -33,7 +33,6 @@ setup(
                 'demo_security = nav2_simple_commander.demo_security:main',
                 'working_on_foxy = nav2_simple_commander.working_on_foxy:main',
                 'main_naviguation_goal = nav2_simple_commander.main_naviguation_goal',
-                'recovery_data_lidar = nav2_simple_commander.recovery_data_lidar',
                 'follow_me = nav2_simple_commander.follow_me'
         ],
     },

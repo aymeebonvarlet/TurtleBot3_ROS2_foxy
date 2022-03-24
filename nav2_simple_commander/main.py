@@ -1,8 +1,11 @@
 import nav2_simple_commander.navigation_goal as ng
 import math
 import rclpy
-import recovery_data_lidar as rdl
+import nav2_simple_commander.follow_me as rdl
 import constants as c
+import traceback
+from rclpy.node import Node
+
 #import follow_me as fm
 
 
@@ -16,12 +19,17 @@ def main():
 
     #follow_me
     rd = rdl.Recovery_data()
-    rclpy.spin(rd)
+    try:
+        rclpy.spin(rd)
+    except Exception as e:
+        traceback.print_exc()
+    finally:
+        rd.destroy_node()
+        rclpy.shutdown()
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    rd.destroy_node()
-    rclpy.shutdown()
+    
 
     exit(0)
 
