@@ -1,6 +1,3 @@
-
-from turtle import delay
-
 #from black import T
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
@@ -15,7 +12,7 @@ import nav2_simple_commander.navigation_goal as ng
 
 class Recovery_data(Node):
     def __init__(self):
-        super().__init__('Follow_me')
+        super().__init__("Follow_me")
         print("Début du follow me")
         self.subscription = self.create_subscription(
             LaserScan,
@@ -39,7 +36,7 @@ class Recovery_data(Node):
         self.active=value
         
     def listener_callback(self, msg):
-        if self.active == False:
+        if self.active == False: #permet de ne pas lancer le follow me si cette variable est False
             return
         self.tab=msg.ranges
         self.angle_increment=msg.angle_increment
@@ -48,6 +45,11 @@ class Recovery_data(Node):
         self.area_barycentre(c.d_debut,c.d_fin)
         self.feet_barrycentre()
         self.go_to()
+        self.set_position()
+        #self.get_logger().info('GO TO: x={:1f}"%s"\n' % str(self.x_goal) + " " + str(self.y_goal)) 
+        self.afficher_frequence()
+    
+    def set_position(self):
         twist = geometry_msgs.msg.Twist()
         twist.linear.x = self.x_goal * c.k_linear
         twist.linear.y = 0.0
@@ -55,8 +57,9 @@ class Recovery_data(Node):
         twist.angular.x = 0.0
         twist.angular.y = 0.0
         twist.angular.z = self.y_goal * c.k_rot
-        #self.get_logger().info('GO TO: x={:1f}"%s"\n' % str(self.x_goal) + " " + str(self.y_goal))
         self.pub.publish(twist)
+        
+    def afficher_frequence(self):
         self.prev_t=self.t
         self.t=time.time()
         dt=self.t-self.prev_t
@@ -66,17 +69,15 @@ class Recovery_data(Node):
         self.get_logger().info('fréquence = {:.1f}Hz'.format(f) )
         
         
-        
-    
     def feet_barrycentre(self):
         #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
         tab_final=[]
         somme_x=0
         somme_y=0
         self.nbre_elt=0
-        for i,r in enumerate(self.tab):
+        for i,r in enumerate(self.tab): #pour tous les éléments du tab
             angle=i*self.angle_increment 
-            if angle<=c.theta/2 or angle>=(self.angle_max-c.theta/2):
+            if angle<=c.theta/2 or angle>=(self.angle_max-c.theta/2): 
                 if c.d_debut<=r<=c.d_fin:
                     x= r * math.cos(angle)
                     y= r * math.sin(angle)

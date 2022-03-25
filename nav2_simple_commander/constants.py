@@ -9,3 +9,5 @@ x_retour=1.88
 y_retour=0.882
 theta_retour=math.pi
 stop_timer=25
+k_linear_controller=0.5
+k_rot_controller=0.9
