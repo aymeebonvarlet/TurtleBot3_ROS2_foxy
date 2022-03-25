@@ -35,6 +35,7 @@ setup(
                 'main_naviguation_goal = nav2_simple_commander.main_naviguation_goal',
                 'follow_me = nav2_simple_commander.follow_me',
                 'main= nav2_simple_commander.main:main',
+                'zuu_teleop_joy= add_on/zuuu_teleop_joy:teleop',
         ],
     },
 )
