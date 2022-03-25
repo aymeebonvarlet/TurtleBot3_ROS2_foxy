@@ -13,7 +13,7 @@ import numpy as np
 import traceback
 import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
-from nav2_simple_commander import follow_me as fm
+import nav2_simple_commander.follow_me as fm
 
 
 msg = """
@@ -53,8 +53,8 @@ def sign(x):
 
 class JoyTeleop(Node):
     def __init__(self, follow_me_node):
-        super().__init__('zuuu_teleop_joy')
-        self.get_logger().info("Starting zuuu_teleop_joy!")
+        super().__init__('Manette')
+        self.get_logger().info("Début du programme avec la manette!")
 
         pygame.init()
         pygame.joystick.init()
@@ -62,14 +62,11 @@ class JoyTeleop(Node):
 
         self.nb_joy = pygame.joystick.get_count()
         if self.nb_joy < 1:
-            self.get_logger().error("No controller detected.")
+            self.get_logger().error("Pas de manette detectée.")
             self.emergency_shutdown()
         self.get_logger().info("nb joysticks: {}".format(self.nb_joy))
         self.j = pygame.joystick.Joystick(0)
         self.nb_hat = self.j.get_numhats()
-        self.follow = False
-    
-        
         self.lin_speed_ratio = 0.6
         self.rot_speed_ratio = 0.6
         # The joyticks dont come back at a perfect 0 position when released. Any abs(value) below min_joy_position will be assumed to be 0
@@ -81,7 +78,7 @@ class JoyTeleop(Node):
         self.follow_me_node = follow_me_node
 
     def emergency_shutdown(self):
-        self.get_logger().warn("Emergency shutdown! Spamming a Twist of 0s!")
+        self.get_logger().warn("Arrêt d'urgence du robot!")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0
@@ -102,8 +99,6 @@ class JoyTeleop(Node):
                     self.get_logger().warn("Pressed emergency stop!")
                     self.emergency_shutdown()
             elif event.type == pygame.JOYHATMOTION:
-                
-                
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
                     self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
@@ -122,16 +117,14 @@ class JoyTeleop(Node):
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
             elif event.type == pygame.JOYAXISMOTION:
                     if self.j.get_axis(4)>0:
-                        self.follow = True
                         self.follow_me_node.active = True
                     if self.j.get_axis(5)>0:
-                        self.follow = False
                         self.follow_me_node.active = False
             else:
                 pass
 
         if self.nb_joy != pygame.joystick.get_count():
-            self.get_logger().warn("Controller disconnected!")
+            self.get_logger().warn("Manette déconnectée")
             self.emergency_shutdown()
 
     def rumble(self, duration):
@@ -188,7 +181,7 @@ class JoyTeleop(Node):
 
     def main_tick(self):
         self.tick_controller()
-        if self.follow == False:
+        if self.follow_me_node.active == False:
             x, y, theta = self.speeds_from_joystick()
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = x
@@ -198,35 +191,37 @@ class JoyTeleop(Node):
             twist.angular.y = 0.0
             twist.angular.z = theta
             self.pub.publish(twist)
-            self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
-             x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
+            self.prev_t = time.time()
+            #self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
+            # x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
+            # self.prev_t=self.t
+            # self.t=time.time()
+            # dt=self.t-self.prev_t
+            # f=0
+            # if dt!= 0: theta
         else:
             x, y, theta = -0.01,-0.01,-0.01
         
-        self.get_logger().info("self.follow : {}".format(self.follow))
+        self.get_logger().info(" Follow me : {}".format(self.follow_me_node.active))
             #self.print_controller()
 
 
-def main():
-    rclpy.init()
-    node_2 = fm.Recovery_data()
-    node = JoyTeleop(node_2)
-    
-    try:
-        while (True):
-            rclpy.spin_once(node)
-            rclpy.spin_once(node_2)
-        
-        #rclpy.spin(node)
-    except Exception as e:
-        traceback.print_exc()
-    finally:
-        node.emergency_shutdown()
-        node.destroy_node()
-        rclpy.shutdown()
+# def main():
+#     rclpy.init()
+#     node_2 = fm.Recovery_data()
+#     node = JoyTeleop(node_2)
+    # rclpy.init()
+#         #rclpy.spin(node)
+#     except Exception as e:
+#         traceback.print_exc()
+#     finally:
+#         node.emergency_shutdown()
+#         node.destroy_node()
+#         rclpy.shutdown()
     
 
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
+    # rclpy.init()
