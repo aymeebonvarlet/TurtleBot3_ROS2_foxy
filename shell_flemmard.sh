@@ -1,3 +1,6 @@
 #!/bin/sh
 
-terminal -e export TURTLEBOT3_MODEL=burger --noclose
+cd ~/turtlebot3_ws
+colcon build --symlink-install
+source ~/.bashrc
+ros2 run nav2_simple_commander main

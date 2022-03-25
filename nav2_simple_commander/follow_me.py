@@ -1,4 +1,7 @@
 
+from turtle import delay
+
+from black import T
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 import nav2_simple_commander.constants as c
@@ -6,19 +9,21 @@ import math
 import time
 import geometry_msgs.msg
 from rclpy.qos import qos_profile_sensor_data
+import nav2_simple_commander.navigation_goal as ng
 
 
 
 class Recovery_data(Node):
-
     def __init__(self):
         super().__init__('minimal_subscriber')
+        print("Début du follow me")
         self.subscription = self.create_subscription(
             LaserScan,
             '/scan',
             self.listener_callback,
             qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
+        self.active = False
         self.tab=[]
         self.angle=0
         self.angle_max=0
@@ -26,10 +31,12 @@ class Recovery_data(Node):
             geometry_msgs.msg.Twist, 'cmd_vel', 10)
         self.x_goal=0
         self.y_goal=0
+        self.t=time.time()
+        self.prev_t=time.time()
         
     def listener_callback(self, msg):
-        #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
-        #self.get_logger().info('I heard: "%s"\n' % msg.angle_max)
+        if self.active == False:
+            return
         self.tab=msg.ranges
         self.angle_increment=msg.angle_increment
         self.angle_max=msg.angle_max
@@ -46,6 +53,14 @@ class Recovery_data(Node):
         twist.angular.z = self.y_goal * c.k_rot
         self.get_logger().info('GO TO: "%s"\n' % str(self.x_goal) + " " + str(self.y_goal))
         self.pub.publish(twist)
+        self.prev_t=self.t
+        self.t=time.time()
+        dt=self.t-self.prev_t
+        f=0
+        if dt!= 0:
+            f=1/dt
+        self.get_logger().info('fréquence = {:.1f}Hz'.format(f) )
+        
         
     
     def feet_barrycentre(self):
@@ -73,29 +88,34 @@ class Recovery_data(Node):
         
     def area_barycentre(self, d_debut,d_fin):
         self.x_bary=(d_debut+d_fin)/2
-        self.y_bary=0
+        self.y_bary=0.0
 
     def go_to(self):
-        
         if self.nbre_elt == 0:
-            self.get_logger().info('aucun elt détecté')
+            print("aucun élement n'est détecté\n")
             self.x_goal = 0.0
             self.y_goal =0.0
         else:
             self.x_goal=(self.x_feet-self.x_bary)
             self.y_goal=-(self.y_bary-self.y_feet)
-        # if (self.x_goal - x_goal)<1 :
-        #     self.x_goal = 0.0
-        # if (self.x_goal - x_goal)<1:
-        #     self.y_goal=0
+            # tmp=0
+            # while(self.x_goal ==0.0 and self.y_goal==0.0):
+            #     tmp+=1
+            #     delay(1000)
+            #     if tmp == 10:
+            #         self.stop_follow_me()
+            #         #ng.navigation_goal(x=c.x_retour,y=c.x_retour,theta=c.theta_retour)
+                
+        
 
-        #self.get_logger().info('[x,y]=: "%s"\n' % x_centre + y_centre)
 
-    def emergency_shutdown(self):
-        self.get_logger().warn("Emergency shutdown! Spamming a Twist of 0s!")
+    def stop_follow_me(self):
+        self.get_logger().warn("Arrêt du follow_me\n")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0
+            self.x_goal=(self.x_feet-self.x_bary)
+            self.y_goal=-(self.y_bary-self.y_feet)
             twist.linear.y = 0.0
             twist.linear.z = 0.0
             twist.angular.x = 0.0

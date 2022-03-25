@@ -3,7 +3,7 @@ import math
 import rclpy
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
-import nav2_simple_commander.navigation_goal as ng
+
 import traceback
 from rclpy.node import Node
 
@@ -19,14 +19,14 @@ def main():
     #ng.navigation_goal(x=1.88,y=0.882,theta=math.pi)
 
     #follow_me
-    fm = fm.Recovery_data()
+    follow_me = fm.Recovery_data()
     try:
-        rclpy.spin(fm)
+        rclpy.spin(follow_me)
     except Exception as e:
         traceback.print_exc()
     finally:
-        fm.emergency_shutdown()
-        fm.destroy_node()
+        follow_me.stop_follow_me()
+        follow_me.destroy_node()
         rclpy.shutdown()
     
 
