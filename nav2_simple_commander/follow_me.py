@@ -98,13 +98,14 @@ class Recovery_data(Node):
         else:
             self.x_goal=(self.x_feet-self.x_bary)
             self.y_goal=-(self.y_bary-self.y_feet)
-            # tmp=0
-            # while(self.x_goal ==0.0 and self.y_goal==0.0):
-            #     tmp+=1
-            #     delay(1000)
-            #     if tmp == 10:
-            #         self.stop_follow_me()
-            #         #ng.navigation_goal(x=c.x_retour,y=c.x_retour,theta=c.theta_retour)
+            tmp=0
+            while(self.x_goal ==0.0 and self.y_goal==0.0):
+                tmp+=1
+                time.sleep(0.5)
+                if tmp == 10:
+                    print("Arrêt du follow_me, 5s sans detection")
+                    self.stop_follow_me()
+                    #ng.navigation_goal(x=c.x_retour,y=c.x_retour,theta=c.theta_retour)
                 
         
 
