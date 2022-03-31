@@ -1,4 +1,5 @@
-#from black import T
+#Ce programme permet de suivre une personne avec uniquement quelques points déterminés par le lidar du turtlebot.
+
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 import nav2_simple_commander.constants as c
@@ -7,13 +8,14 @@ import time
 import geometry_msgs.msg
 from rclpy.qos import qos_profile_sensor_data
 import nav2_simple_commander.navigation_goal as ng
-
-
+import logging
 
 class Recovery_data(Node):
     def __init__(self):
         super().__init__("Follow_me")
-        print("Début du follow me")
+        self.log= logging.getLogger('Follow_me')
+        self.log.setLevel(c.log_level)
+        self.log.info("Début du follow me")
         self.subscription = self.create_subscription(
             LaserScan,
             '/scan',
@@ -31,8 +33,9 @@ class Recovery_data(Node):
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
-    
+        
     def set_active(self, value):
+        self.log.debug('Modification de la valeur active par :', value)
         self.active=value
         
     def listener_callback(self, msg):
@@ -66,8 +69,7 @@ class Recovery_data(Node):
         f=0
         if dt!= 0:
             f=1/dt
-        self.get_logger().info('fréquence = {:.1f}Hz'.format(f) )
-        
+        self.log.debug('fréquence = {:.1f}Hz'.format(f))
         
     def feet_barrycentre(self):
         #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
@@ -117,10 +119,7 @@ class Recovery_data(Node):
                     return
             else :
                 self.tmp=0
-            
-                #ng.navigation_goal(x=c.x_retour,y=c.x_retour,theta=c.theta_retour)
                 
-        
     def stop_move(self):
         twist = geometry_msgs.msg.Twist()
         twist.linear.x = 0.0
@@ -143,10 +142,3 @@ class Recovery_data(Node):
             twist.angular.z = 0.0
             self.pub.publish(twist)
             time.sleep(0.01)
-
-    
-    
-
-
-
-

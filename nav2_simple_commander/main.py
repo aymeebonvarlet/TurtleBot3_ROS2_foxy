@@ -1,6 +1,7 @@
 #import nav2_simple_commander.navigation_goal as ng
 import math
 from nav2_simple_commander.controller import JoyTeleop
+import nav2_simple_commander.navigation_goal as ng
 import rclpy
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
@@ -18,7 +19,8 @@ def main():
     
     #nav_goal
     #donner position en x,y, theta 
-    #ng.navigation_goal(x=1.88,y=0.882,theta=math.pi)
+    nav_goal = ng.Navigation_goal()
+    nav_goal.navigation_goal(x=1.88,y=0.882,theta=math.pi)
 
     #follow_me
     # follow_me = fm.Recovery_data()
@@ -31,19 +33,19 @@ def main():
     #     follow_me.destroy_node()
     #     rclpy.shutdown()
         
-    #controller
-    follow_me = fm.Recovery_data()
-    control=controller.JoyTeleop(follow_me)
-    try:
-        while(True):
-            rclpy.spin_once(follow_me)
-            rclpy.spin_once(control)
-    except Exception as e:
-        traceback.print_exc()
-    finally:
-        follow_me.stop_follow_me()
-        follow_me.destroy_node()
-        rclpy.shutdown    
+    # #controller
+    # follow_me = fm.Recovery_data()
+    # control=controller.JoyTeleop(follow_me)
+    # try:
+    #     while(True):
+    #         rclpy.spin_once(follow_me)
+    #         rclpy.spin_once(control)
+    # except Exception as e:
+    #     traceback.print_exc()
+    # finally:
+    #     follow_me.stop_follow_me()
+    #     follow_me.destroy_node()
+    #     rclpy.shutdown    
     
 
     exit(0)

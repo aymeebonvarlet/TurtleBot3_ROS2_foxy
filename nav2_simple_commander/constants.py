@@ -11,3 +11,5 @@ theta_retour=math.pi
 stop_timer=25
 k_linear_controller=0.5
 k_rot_controller=0.9
+#CRITICAL=50 ERROR=40 WARNING=30 INFO=20 DEBUG=10 NOTSET=0
+log_level=10
