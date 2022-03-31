@@ -1,11 +1,11 @@
 #import nav2_simple_commander.navigation_goal as ng
-import math
 from nav2_simple_commander.controller import JoyTeleop
 import nav2_simple_commander.navigation_goal as ng
 import rclpy
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
 import nav2_simple_commander.controller as controller
+import nav2_simple_commander.recup_position as rp
 
 import traceback
 from rclpy.node import Node
@@ -19,8 +19,8 @@ def main():
     
     #nav_goal
     #donner position en x,y, theta 
-    nav_goal = ng.Navigation_goal()
-    nav_goal.navigation_goal(x=1.88,y=0.882,theta=math.pi)
+    # nav_goal = ng.Navigation_goal()
+    # nav_goal.navigation_goal(x=1.88,y=0.882,theta=math.pi)
 
     #follow_me
     # follow_me = fm.Recovery_data()
@@ -46,6 +46,15 @@ def main():
     #     follow_me.stop_follow_me()
     #     follow_me.destroy_node()
     #     rclpy.shutdown    
+    
+    #recup position
+    recup_pos=rp.Initial_position()
+    try:
+        rclpy.spin(recup_pos)
+    except Exception as e:
+        traceback.print_exc()
+    finally:
+        rclpy.shutdown()
     
 
     exit(0)

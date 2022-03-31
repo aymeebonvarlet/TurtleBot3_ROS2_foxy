@@ -1,14 +1,13 @@
 import nav2_simple_commander.working_on_foxy as wf
 import numpy as np # Scientific computing library for Python
 from rclpy.node import Node
-import constants as c 
-import logging
+import nav2_simple_commander.constants as c 
 
 class Navigation_goal(Node):
   def __init__(self):
-    super().__init__('Navigation goal')
-    self.log = logging.getLogger('Navigation goal')
-    self.log.setLevel(c.log_level)
+    super().__init__('Navigation_goal')
+    self.log=self.get_logger()
+    self.log.set_level(c.log_level)
   
   def _get_quaternion_from_euler(self,roll, pitch, yaw):
     """

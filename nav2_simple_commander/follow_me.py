@@ -8,13 +8,12 @@ import time
 import geometry_msgs.msg
 from rclpy.qos import qos_profile_sensor_data
 import nav2_simple_commander.navigation_goal as ng
-import logging
 
 class Recovery_data(Node):
     def __init__(self):
         super().__init__("Follow_me")
-        self.log= logging.getLogger('Follow_me')
-        self.log.setLevel(c.log_level)
+        self.log=self.get_logger()
+        self.log.set_level(c.log_level)
         self.log.info("Début du follow me")
         self.subscription = self.create_subscription(
             LaserScan,
@@ -35,7 +34,7 @@ class Recovery_data(Node):
         self.tmp=0
         
     def set_active(self, value):
-        self.log.debug('Modification de la valeur active par :', value)
+        self.log.debug('Modification de la valeur active par :' + str(value))
         self.active=value
         
     def listener_callback(self, msg):
@@ -92,29 +91,30 @@ class Recovery_data(Node):
         else :
             self.x_feet=self.x_bary
             self.y_feet=self.y_bary
-        self.get_logger().info('feet: "%s"\n' % str(self.x_feet) + " " + str(self.y_feet))
+        self.log.debug('x, y feet: "%s"\n' % str(self.x_feet) + " " + str(self.y_feet))
         
     def area_barycentre(self, d_debut,d_fin):
         self.x_bary=(d_debut+d_fin)/2
         self.y_bary=0.0
 
     def go_to(self):
+        self.log.debug("On est dans la fonction go_to")
         if self.nbre_elt == 0: #si pas d'élements détectés
-            print("aucun élement n'est détecté\n")
+            self.log.debug("aucun élement n'est détecté\n")
             self.x_goal = 0.0
             self.y_goal =0.0
         else:
             self.x_goal=(self.x_feet-self.x_bary)
             self.y_goal=-(self.y_bary-self.y_feet)
-            print("stop timer= ", self.tmp)
+            self.log.debug("stop timer= ", self.tmp)
             if self.x_goal < c.diff_bary_feet and self.y_goal < c.diff_bary_feet: #si les barycentres sont toujours égaux
-                print("pas de mvt détectée")
+                self.log.debug("pas de mvt détectée")
                 self.tmp+=1
                 self.stop_move()
                 if self.tmp == c.stop_timer: #si trop de temps attendus on sort du follow_me
                     self.stop_move()
                     self.tmp=0
-                    print("4s sans detection \n")   
+                    self.log.info("4s sans detection de mouvement\n")   
                     self.set_active(False)
                     return
             else :
@@ -131,7 +131,7 @@ class Recovery_data(Node):
         self.pub.publish(twist)
 
     def stop_follow_me(self):
-        self.get_logger().warn("Arrêt du follow_me\n")
+        self.log.warning("Arrêt du follow_me\n")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0

@@ -8,15 +8,12 @@ import rclpy
 from rclpy.node import Node
 import pygame
 import time
-import math
 import numpy as np
-import traceback
 import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
-import logging
-import constants as c
+import nav2_simple_commander.constants as c
 
 
 msg = """
@@ -57,8 +54,8 @@ def sign(x):
 class JoyTeleop(Node):
     def __init__(self, follow_me_node):
         super().__init__('Manette')
-        self.log= logging.getLogger('Controller')
-        self.log.setLevel(c.log_level)
+        self.log=self.get_logger()
+        self.log.set_level(c.log_level)
         self.log.info("Début du programme avec la manette!")
         pygame.init()
         pygame.joystick.init()
@@ -203,7 +200,7 @@ class JoyTeleop(Node):
             f=0
             if dt!= 0: 
                 f=1/dt
-            self.log.info('fréquence = {:.1f}Hz'.format(f) )
+            self.log.debug('fréquence = {:.1f}Hz'.format(f) )
         else:
             x, y, theta = -0.01,-0.01,-0.01
         
