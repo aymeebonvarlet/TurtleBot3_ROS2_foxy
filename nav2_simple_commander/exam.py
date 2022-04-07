@@ -12,11 +12,14 @@ import nav2_simple_commander.recup_position as rp
 
 
 class Exam(Node):
-    def __init__(self):
+    def __init__(self, follow_me_node, recup_pos_node, nav_goal_node):
         super().__init__("Mode_examen")
         self.log=self.get_logger()
         self.log.set_level(c.log_level)
         self.log.info("Mode examen activé")
+        self.follow_me_node = follow_me_node
+        self.recup_pos_node = recup_pos_node
+        self.nav_goal_node = nav_goal_node
     
     def go(self):
         navigation_goal = ng.Navigation_goal()

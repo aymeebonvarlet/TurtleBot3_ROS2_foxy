@@ -52,7 +52,7 @@ def sign(x):
 
 
 class JoyTeleop(Node):
-    def __init__(self, follow_me_node):
+    def __init__(self, follow_me_node, exam_node,recup_pos_node, nav_goal_node):
         super().__init__('Manette')
         self.log=self.get_logger()
         self.log.set_level(c.log_level)
@@ -75,6 +75,9 @@ class JoyTeleop(Node):
         self.create_timer(0.01, self.main_tick)
         self.get_logger().info(msg)
         self.follow_me_node = follow_me_node
+        self.exam_node = exam_node
+        self.recup_pos_node = recup_pos_node
+        self.nav_goal_node = nav_goal_node
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
@@ -100,7 +103,7 @@ class JoyTeleop(Node):
                 if self.j.get_button(1):
                     self.log.warning("Pressed emergency stop!")
                     self.emergency_shutdown()
-                if self.j.get_button(7):
+                if self.j.get_button(7)> :
                     examen = exam.Exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
