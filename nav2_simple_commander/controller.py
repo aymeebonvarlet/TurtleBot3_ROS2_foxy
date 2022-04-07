@@ -67,8 +67,8 @@ class JoyTeleop(Node):
         self.get_logger().info("nb joysticks: {}".format(self.nb_joy))
         self.j = pygame.joystick.Joystick(0)
         self.nb_hat = self.j.get_numhats()
-        self.lin_speed_ratio = 0.6
-        self.rot_speed_ratio = 0.6
+        self.lin_speed_ratio = 0.2
+        self.rot_speed_ratio = 0.9
         # The joyticks dont come back at a perfect 0 position when released. Any abs(value) below min_joy_position will be assumed to be 0
         self.min_joy_position = 0.2
         self.pub = self.create_publisher(
@@ -165,7 +165,7 @@ class JoyTeleop(Node):
         if abs(self.j.get_axis(1)) < self.min_joy_position:
             x = 0.0
         else:
-            x = -self.j.get_axis(1) * cycle_max_t
+            x = (-self.j.get_axis(1) * cycle_max_t)/5
 
         if abs(self.j.get_axis(0)) < self.min_joy_position:
             y = 0.0
@@ -192,8 +192,8 @@ class JoyTeleop(Node):
             twist.angular.z = theta
             self.pub.publish(twist)
             self.prev_t = time.time()
-            #self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
-            # x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
+            self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
+             x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
             # self.prev_t=self.t
             # self.t=time.time()
             # dt=self.t-self.prev_t
