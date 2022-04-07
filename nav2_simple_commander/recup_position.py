@@ -11,15 +11,17 @@ class Initial_position(Node):
         self.log=self.get_logger()
         self.log.set_level(c.log_level)
         self.log.info("On récupère la position initiale du robot")
-        self.pub = self.create_subscription(
+        self.sub = self.create_subscription(
             PoseWithCovarianceStamped,
             '/amcl_pose',
             self.callback,
             qos_profile_sensor_data)
-
+        self.sub
+        self.active = False
         
     def callback(self, msg):
-        print('coucou')
+        if not self.active :
+            return 
         self.position=msg.pose.pose.position
         self.x= self.position.x
         self.y= self.position.y
@@ -30,6 +32,19 @@ class Initial_position(Node):
         self.log.debug("y= " + str(self.y) + '\n')
         self.log.debug("qz= " + str(self.qz) + '\n')
         self.log.debug("qw= " + str(self.qw) + '\n')
+    
+    def get_x(self):
+        return self.x
+    
+    def get_y(self):
+        return self.y
+    
+    def get_qz(self):
+        return self.qz
+    
+    def get_qw(self):
+        return self.qw
+    
         # self.angle_increment=msg.angle_increment
         # self.angle_max=msg.angle_max
         

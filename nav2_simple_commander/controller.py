@@ -13,7 +13,7 @@ import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
-import nav2_simple_commander.constants as c
+import nav2_simple_commander.exam as exam 
 
 
 msg = """
@@ -100,6 +100,8 @@ class JoyTeleop(Node):
                 if self.j.get_button(1):
                     self.log.warning("Pressed emergency stop!")
                     self.emergency_shutdown()
+                if self.j.get_button(7):
+                    examen = exam.Exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
