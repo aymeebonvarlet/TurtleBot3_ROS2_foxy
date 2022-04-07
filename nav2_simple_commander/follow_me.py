@@ -1,7 +1,5 @@
+#Ce programme permet de suivre une personne avec uniquement quelques points déterminés par le lidar du turtlebot.
 
-from turtle import delay
-
-#from black import T
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 import nav2_simple_commander.constants as c
@@ -11,12 +9,12 @@ import geometry_msgs.msg
 from rclpy.qos import qos_profile_sensor_data
 import nav2_simple_commander.navigation_goal as ng
 
-
-
 class Recovery_data(Node):
     def __init__(self):
-        super().__init__('Follow_me')
-        print("Début du follow me")
+        super().__init__("Follow_me")
+        self.log=self.get_logger()
+        self.log.set_level(c.log_level)
+        self.log.info("Début du follow me")
         self.subscription = self.create_subscription(
             LaserScan,
             '/scan',
@@ -34,12 +32,13 @@ class Recovery_data(Node):
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
-    
+        
     def set_active(self, value):
+        self.log.debug('Modification de la valeur active par :' + str(value))
         self.active=value
         
     def listener_callback(self, msg):
-        if self.active == False:
+        if self.active == False: #permet de ne pas lancer le follow me si cette variable est False
             return
         self.tab=msg.ranges
         self.angle_increment=msg.angle_increment
@@ -48,6 +47,11 @@ class Recovery_data(Node):
         self.area_barycentre(c.d_debut,c.d_fin)
         self.feet_barrycentre()
         self.go_to()
+        self.set_position()
+        #self.get_logger().info('GO TO: x={:1f}"%s"\n' % str(self.x_goal) + " " + str(self.y_goal)) 
+        self.afficher_frequence()
+    
+    def set_position(self):
         twist = geometry_msgs.msg.Twist()
         twist.linear.x = self.x_goal * c.k_linear
         twist.linear.y = 0.0
@@ -55,28 +59,26 @@ class Recovery_data(Node):
         twist.angular.x = 0.0
         twist.angular.y = 0.0
         twist.angular.z = self.y_goal * c.k_rot
-        #self.get_logger().info('GO TO: x={:1f}"%s"\n' % str(self.x_goal) + " " + str(self.y_goal))
         self.pub.publish(twist)
+        
+    def afficher_frequence(self):
         self.prev_t=self.t
         self.t=time.time()
         dt=self.t-self.prev_t
         f=0
         if dt!= 0:
             f=1/dt
-        self.get_logger().info('fréquence = {:.1f}Hz'.format(f) )
+        self.log.debug('fréquence = {:.1f}Hz'.format(f))
         
-        
-        
-    
     def feet_barrycentre(self):
         #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
         tab_final=[]
         somme_x=0
         somme_y=0
         self.nbre_elt=0
-        for i,r in enumerate(self.tab):
+        for i,r in enumerate(self.tab): #pour tous les éléments du tab
             angle=i*self.angle_increment 
-            if angle<=c.theta/2 or angle>=(self.angle_max-c.theta/2):
+            if angle<=c.theta/2 or angle>=(self.angle_max-c.theta/2): 
                 if c.d_debut<=r<=c.d_fin:
                     x= r * math.cos(angle)
                     y= r * math.sin(angle)
@@ -89,37 +91,35 @@ class Recovery_data(Node):
         else :
             self.x_feet=self.x_bary
             self.y_feet=self.y_bary
-        self.get_logger().info('feet: "%s"\n' % str(self.x_feet) + " " + str(self.y_feet))
+        self.log.debug('x, y feet: "%s"\n' % str(self.x_feet) + " " + str(self.y_feet))
         
     def area_barycentre(self, d_debut,d_fin):
         self.x_bary=(d_debut+d_fin)/2
         self.y_bary=0.0
 
     def go_to(self):
+        self.log.debug("On est dans la fonction go_to")
         if self.nbre_elt == 0: #si pas d'élements détectés
-            print("aucun élement n'est détecté\n")
+            self.log.debug("aucun élement n'est détecté\n")
             self.x_goal = 0.0
             self.y_goal =0.0
         else:
             self.x_goal=(self.x_feet-self.x_bary)
             self.y_goal=-(self.y_bary-self.y_feet)
-            print("stop timer= ", self.tmp)
+            self.log.debug("stop timer= ", self.tmp)
             if self.x_goal < c.diff_bary_feet and self.y_goal < c.diff_bary_feet: #si les barycentres sont toujours égaux
-                print("pas de mvt détectée")
+                self.log.debug("pas de mvt détectée")
                 self.tmp+=1
                 self.stop_move()
                 if self.tmp == c.stop_timer: #si trop de temps attendus on sort du follow_me
                     self.stop_move()
                     self.tmp=0
-                    print("4s sans detection \n")   
+                    self.log.info("4s sans detection de mouvement\n")   
                     self.set_active(False)
                     return
             else :
                 self.tmp=0
-            
-                #ng.navigation_goal(x=c.x_retour,y=c.x_retour,theta=c.theta_retour)
                 
-        
     def stop_move(self):
         twist = geometry_msgs.msg.Twist()
         twist.linear.x = 0.0
@@ -131,7 +131,7 @@ class Recovery_data(Node):
         self.pub.publish(twist)
 
     def stop_follow_me(self):
-        self.get_logger().warn("Arrêt du follow_me\n")
+        self.log.warning("Arrêt du follow_me\n")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0
@@ -142,10 +142,3 @@ class Recovery_data(Node):
             twist.angular.z = 0.0
             self.pub.publish(twist)
             time.sleep(0.01)
-
-    
-    
-
-
-
-
