@@ -14,6 +14,11 @@ import traceback
 import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
+<<<<<<< HEAD
+=======
+import nav2_simple_commander.constants as c
+import nav2_simple_commander.exam as exam 
+>>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
 
 
 msg = """
@@ -52,7 +57,7 @@ def sign(x):
 
 
 class JoyTeleop(Node):
-    def __init__(self, follow_me_node):
+    def __init__(self, follow_me_node, exam_node,recup_pos_node, nav_goal_node):
         super().__init__('Manette')
         self.get_logger().info("Début du programme avec la manette!")
 
@@ -76,6 +81,15 @@ class JoyTeleop(Node):
         self.create_timer(0.01, self.main_tick)
         self.get_logger().info(msg)
         self.follow_me_node = follow_me_node
+<<<<<<< HEAD
+=======
+        self.exam_node = exam_node
+        self.recup_pos_node = recup_pos_node
+        self.nav_goal_node = nav_goal_node
+        self.t=time.time()
+        self.prev_t=time.time()
+        self.tmp=0
+>>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
 
     def emergency_shutdown(self):
         self.get_logger().warn("Arrêt d'urgence du robot!")
@@ -98,6 +112,8 @@ class JoyTeleop(Node):
                 if self.j.get_button(1):
                     self.get_logger().warn("Pressed emergency stop!")
                     self.emergency_shutdown()
+                if self.j.get_button(7)> :
+                    examen = exam.Exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
