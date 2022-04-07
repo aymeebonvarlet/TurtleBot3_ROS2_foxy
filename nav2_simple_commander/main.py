@@ -41,6 +41,7 @@ def main():
     control=controller.JoyTeleop(follow_me, nav_goal)
     try:
         while(True):
+            print("dans le while")
             #rclpy.spin_once(recup_pos)
             rclpy.spin_once(follow_me)
             rclpy.spin_once(control)

@@ -33,6 +33,7 @@ class Recovery_data(Node):
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
+        self.finish=False
         
     def set_active(self, value):
         self.log.debug('Modification de la valeur active par :' + str(value))
@@ -118,6 +119,7 @@ class Recovery_data(Node):
                     self.tmp=0
                     self.log.info("4s sans detection de mouvement\n")   
                     self.set_active(False)
+                    self.finish=True
                     return
             else :
                 self.tmp=0

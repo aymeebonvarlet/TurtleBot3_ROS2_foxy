@@ -90,6 +90,7 @@ class JoyTeleop(Node):
             self._callback_amcl,
             qos_profile_sensor_data)
         self.amcl_sub
+        self.go_exam=False
         
         
     def _callback_amcl(self, msg):
@@ -124,6 +125,7 @@ class JoyTeleop(Node):
             time.sleep(0.01)
 
     def tick_controller(self):
+        self.mode_exam()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.emergency_shutdown()
@@ -132,7 +134,7 @@ class JoyTeleop(Node):
                     self.log.warn("Pressed emergency stop!")
                     self.emergency_shutdown()
                 if self.j.get_button(7):
-                    self.mode_exam()
+                    self.go_exam =True
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
@@ -164,23 +166,15 @@ class JoyTeleop(Node):
             self.log.warn("Manette déconnectée")
             self.emergency_shutdown()
             
+    
     def mode_exam(self):
-        self.log.info("Début du mode examen")
-        self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
-        while not self.active_fm and not self.active_ng:
-            self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
-            if not self.active_fm and not self.active_ng:
-                self.log.debug('dans mode exam follow_me')
-                self.log.info(" Follow me : {}".format(self.follow_me_node.active))
-                self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
-                self.follow_me_node.active =True
-                self.active_fm = True
-                
-            elif self.active_fm and not self.active_ng:
-                self.log.debug("on active le nav_goal")
-                self.nav_goal_node.navigation_goal(3.82,0.0,math.pi)
-                #self.log.info("x= " + str(self.recup_pos_node.get_x()) + " y= " + str(self.recup_pos_node.get_y()))
-                self.active_ng = True
+        if self.go_exam and self.follow_me_node.active is False:
+            self.log.info("Début du mode examen")
+            self.follow_me_node.active =True
+            #passage en nav goal
+        if self.follow_me_node.finish is True:
+            self.log.warning("Début du nav goal")
+            self.nav_goal_node.navigation_goal(1.32,2.26,math.pi)
         
     def rumble(self, duration):
         self.rumble_start = time.time()
@@ -236,7 +230,7 @@ class JoyTeleop(Node):
 
     def main_tick(self):
         self.tick_controller()
-        if not self.follow_me_node.active and not self.active_ng:
+        if not self.follow_me_node.active :
             self.log.debug("la manette à la main")
             x, y, theta = self.speeds_from_joystick()
             twist = geometry_msgs.msg.Twist()
