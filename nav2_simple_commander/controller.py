@@ -14,11 +14,7 @@ import traceback
 import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
-<<<<<<< HEAD
-=======
 import nav2_simple_commander.constants as c
-import nav2_simple_commander.exam as exam 
->>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
 
 
 msg = """
@@ -57,14 +53,11 @@ def sign(x):
 
 
 class JoyTeleop(Node):
-    def __init__(self, follow_me_node, exam_node,recup_pos_node, nav_goal_node):
+    def __init__(self, follow_me_node,recup_pos_node, nav_goal_node):
         super().__init__('Manette')
         self.get_logger().info("Début du programme avec la manette!")
-
         pygame.init()
         pygame.joystick.init()
-        
-
         self.nb_joy = pygame.joystick.get_count()
         if self.nb_joy < 1:
             self.get_logger().error("Pas de manette detectée.")
@@ -81,15 +74,14 @@ class JoyTeleop(Node):
         self.create_timer(0.01, self.main_tick)
         self.get_logger().info(msg)
         self.follow_me_node = follow_me_node
-<<<<<<< HEAD
-=======
-        self.exam_node = exam_node
         self.recup_pos_node = recup_pos_node
         self.nav_goal_node = nav_goal_node
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
->>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
+        self.active_fm=False
+        self.active_ng=False
+        
 
     def emergency_shutdown(self):
         self.get_logger().warn("Arrêt d'urgence du robot!")
@@ -112,8 +104,8 @@ class JoyTeleop(Node):
                 if self.j.get_button(1):
                     self.get_logger().warn("Pressed emergency stop!")
                     self.emergency_shutdown()
-                if self.j.get_button(7)> :
-                    examen = exam.Exam()
+                if self.j.get_button(7):
+                    self.mode_exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
@@ -142,6 +134,18 @@ class JoyTeleop(Node):
         if self.nb_joy != pygame.joystick.get_count():
             self.get_logger().warn("Manette déconnectée")
             self.emergency_shutdown()
+            
+    def mode_exam(self):
+        self.get_logger().info("Début du mode examen")
+        while (not self.active_fm and not self.active_ng):
+            if not self.active_fm :
+                self.follow_me_node.active =True
+                self.active_fm = True
+            if self.active_fm and not self.active_ng:
+                self.nav_goal_node.active = True
+                #self.get_logger().info("x= " + str(self.recup_pos_node.get_x()) + " y= " + str(self.recup_pos_node.get_y()))
+                self.active_ng = True
+        
 
     def rumble(self, duration):
         self.rumble_start = time.time()
@@ -197,7 +201,7 @@ class JoyTeleop(Node):
 
     def main_tick(self):
         self.tick_controller()
-        if self.follow_me_node.active == False:
+        if not self.follow_me_node.active and not self.nav_goal_node.active and not self.recup_pos_node.activate:
             x, y, theta = self.speeds_from_joystick()
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = x

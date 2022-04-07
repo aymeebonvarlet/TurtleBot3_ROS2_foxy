@@ -5,22 +5,24 @@ from rclpy.qos import qos_profile_sensor_data
 import nav2_simple_commander.navigation_goal as ng
 import logging
 
-class Initial_position(Node):
+class Recup_pos(Node):
     def __init__(self):
         super().__init__("Recup_position")
         self.log=self.get_logger()
         self.log.set_level(c.log_level)
-        self.log.info("On récupère la position initiale du robot")
+        self.log.info("Initialisation de la classe Recup_pos")
         self.sub = self.create_subscription(
             PoseWithCovarianceStamped,
             '/amcl_pose',
-            self.callback,
+            self._callback,
             qos_profile_sensor_data)
         self.sub
-        self.active = False
+        self.activate = False
+        self.log.debug("fin")
         
-    def callback(self, msg):
-        if not self.active :
+    def _callback(self, msg):
+        self.log.debug("dans recup pos")
+        if not self.activate:
             return 
         self.position=msg.pose.pose.position
         self.x= self.position.x

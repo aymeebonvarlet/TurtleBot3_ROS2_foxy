@@ -8,13 +8,14 @@ import time
 import geometry_msgs.msg
 from rclpy.qos import qos_profile_sensor_data
 import nav2_simple_commander.navigation_goal as ng
+import nav2_simple_commander.recup_position as rp
 
 class Recovery_data(Node):
     def __init__(self):
         super().__init__("Follow_me")
         self.log=self.get_logger()
         self.log.set_level(c.log_level)
-        self.log.info("Début du follow me")
+        self.log.info("Initialisation de la classe Follow me")
         self.subscription = self.create_subscription(
             LaserScan,
             '/scan',
@@ -38,7 +39,7 @@ class Recovery_data(Node):
         self.active=value
         
     def listener_callback(self, msg):
-        if self.active == False: #permet de ne pas lancer le follow me si cette variable est False
+        if not self.active: #permet de ne pas lancer le follow me si cette variable est False
             return
         self.tab=msg.ranges
         self.angle_increment=msg.angle_increment
@@ -49,7 +50,7 @@ class Recovery_data(Node):
         self.go_to()
         self.set_position()
         #self.get_logger().info('GO TO: x={:1f}"%s"\n' % str(self.x_goal) + " " + str(self.y_goal)) 
-        self.afficher_frequence()
+        self.afficher_f_and_pos()
     
     def set_position(self):
         twist = geometry_msgs.msg.Twist()
@@ -61,7 +62,7 @@ class Recovery_data(Node):
         twist.angular.z = self.y_goal * c.k_rot
         self.pub.publish(twist)
         
-    def afficher_frequence(self):
+    def afficher_f_and_pos(self):
         self.prev_t=self.t
         self.t=time.time()
         dt=self.t-self.prev_t
@@ -69,6 +70,7 @@ class Recovery_data(Node):
         if dt!= 0:
             f=1/dt
         self.log.debug('fréquence = {:.1f}Hz'.format(f))
+        #self.log.info("x= " + str(self.recup_pos.get_x()) + " y= " + str(self.recup_pos.get_y()))
         
     def feet_barrycentre(self):
         #self.get_logger().info('I heard: "%s"\n' % msg.ranges)
