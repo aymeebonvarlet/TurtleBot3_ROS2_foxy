@@ -9,12 +9,17 @@ import rclpy
 from rclpy.node import Node
 import pygame
 import time
+import math
 import numpy as np
+import traceback
 import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
+<<<<<<< HEAD
+=======
 import nav2_simple_commander.constants as c
 import nav2_simple_commander.exam as exam 
+>>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
 
 
 msg = """
@@ -53,22 +58,23 @@ def sign(x):
 
 
 class JoyTeleop(Node):
-    def __init__(self, follow_me_node):
+    def __init__(self, follow_me_node, exam_node,recup_pos_node, nav_goal_node):
         super().__init__('Manette')
-        self.log=self.get_logger()
-        self.log.set_level(c.log_level)
-        self.log.info("Début du programme avec la manette!")
+        self.get_logger().info("Début du programme avec la manette!")
+
         pygame.init()
         pygame.joystick.init()
+        
+
         self.nb_joy = pygame.joystick.get_count()
         if self.nb_joy < 1:
-            self.log.error("Pas de manette detectée.")
+            self.get_logger().error("Pas de manette detectée.")
             self.emergency_shutdown()
-        self.log.debug("nb joysticks: {}".format(self.nb_joy))
+        self.get_logger().info("nb joysticks: {}".format(self.nb_joy))
         self.j = pygame.joystick.Joystick(0)
         self.nb_hat = self.j.get_numhats()
-        self.lin_speed_ratio = c.k_linear_controller
-        self.rot_speed_ratio = c.k_rot_controller
+        self.lin_speed_ratio = 0.2
+        self.rot_speed_ratio = 0.9
         # The joyticks dont come back at a perfect 0 position when released. Any abs(value) below min_joy_position will be assumed to be 0
         self.min_joy_position = 0.2
         self.pub = self.create_publisher(
@@ -76,12 +82,18 @@ class JoyTeleop(Node):
         self.create_timer(0.01, self.main_tick)
         self.get_logger().info(msg)
         self.follow_me_node = follow_me_node
+<<<<<<< HEAD
+=======
+        self.exam_node = exam_node
+        self.recup_pos_node = recup_pos_node
+        self.nav_goal_node = nav_goal_node
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
+>>>>>>> 635b4a6221d7f1e8e2088542a7c50863d3de84e9
 
     def emergency_shutdown(self):
-        self.log.debug("Arrêt d'urgence du robot!")
+        self.get_logger().warn("Arrêt d'urgence du robot!")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0
@@ -99,26 +111,26 @@ class JoyTeleop(Node):
                 self.emergency_shutdown()
             elif event.type == pygame.JOYBUTTONDOWN:
                 if self.j.get_button(1):
-                    self.log.warning("Pressed emergency stop!")
+                    self.get_logger().warn("Pressed emergency stop!")
                     self.emergency_shutdown()
-                if self.j.get_button(7):
+                if self.j.get_button(7)> :
                     examen = exam.Exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
-                    self.log.debug("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)==(1, 0):  # fleche droite
                     self.rot_speed_ratio = min(1.0, self.rot_speed_ratio+0.05)
-                    self.log.debug("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)== (0, -1):  # fleche gauche
                     self.lin_speed_ratio = max(0.0, self.lin_speed_ratio-0.05)
-                    self.log.debug("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)==(-1, 0):  # fleche bas
                     self.rot_speed_ratio = max(0.0, self.rot_speed_ratio-0.05)
-                    self.log.debug("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
             elif event.type == pygame.JOYAXISMOTION:
                     if self.j.get_axis(4)>0:
@@ -130,7 +142,7 @@ class JoyTeleop(Node):
                 pass
 
         if self.nb_joy != pygame.joystick.get_count():
-            self.log.warning("Manette déconnectée")
+            self.get_logger().warn("Manette déconnectée")
             self.emergency_shutdown()
 
     def rumble(self, duration):
@@ -144,25 +156,25 @@ class JoyTeleop(Node):
         # Get the name from the OS for the controller/joystick.
         #time.sleep(1)
         name = self.j.get_name()
-        self.log.debug("Joystick name: {}".format(name))
+        self.get_logger().info("Joystick name: {}".format(name))
 
         # Usually axis run in pairs, up/down for one, and left/right for
         # the other.
         axes = self.j.get_numaxes()
-        self.log.debug("Number of axes: {}".format(axes))
-        self.log.debug("nb hat : {}".format(self.nb_hat))
+        self.get_logger().info("Number of axes: {}".format(axes))
+        self.get_logger().info("nb hat : {}".format(self.nb_hat))
         hats = self.j.get_hat(0)
-        self.log.debug("current hat : {}".format(hats))
+        self.get_logger().info("current hat : {}".format(hats))
         for i in range(axes):
             axis = self.j.get_axis(i)
-            self.log.debug("Axis {} value: {:>6.3f}".format(i, axis))
+            self.get_logger().info("Axis {} value: {:>6.3f}".format(i, axis))
 
         buttons = self.j.get_numbuttons()
-        self.log.debug("Number of buttons: {}".format(buttons))
+        self.get_logger().info("Number of buttons: {}".format(buttons))
 
         for i in range(buttons):
             button = self.j.get_button(i)
-            self.log.debug("Button {:>2} value: {}".format(i, button))
+            self.get_logger().info("Button {:>2} value: {}".format(i, button))
 
     def speeds_from_joystick(self):
         cycle_max_t = self.lin_speed_ratio  # 0.2*factor
@@ -198,17 +210,17 @@ class JoyTeleop(Node):
             twist.angular.z = theta
             self.pub.publish(twist)
             self.prev_t = time.time()
-            self.prev_t=self.t
-            self.t=time.time()
-            dt=self.t-self.prev_t
-            f=0
-            if dt!= 0: 
-                f=1/dt
-            self.log.debug('fréquence = {:.1f}Hz'.format(f) )
+            self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
+             x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
+            # self.prev_t=self.t
+            # self.t=time.time()
+            # dt=self.t-self.prev_t
+            # f=0
+            # if dt!= 0: theta
         else:
             x, y, theta = -0.01,-0.01,-0.01
         
-        self.log.debug(" Follow me : {}".format(self.follow_me_node.active))
+        self.get_logger().info(" Follow me : {}".format(self.follow_me_node.active))
             #self.print_controller()
 
 

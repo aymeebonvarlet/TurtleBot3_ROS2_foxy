@@ -36,6 +36,8 @@ def main():
         
     # #controller
     follow_me = fm.Recovery_data()
+    nav_goal = ng.Navigation_goal()
+    recup_pos=rp.Initial_position()
     control=controller.JoyTeleop(follow_me)
     try:
         while(True):
