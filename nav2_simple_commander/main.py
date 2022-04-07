@@ -35,20 +35,20 @@ def main():
     #     rclpy.shutdown()
         
     # #controller
-    follow_me = fm.Recovery_data()
-    nav_goal = ng.Navigation_goal()
-    recup_pos=rp.Initial_position()
-    control=controller.JoyTeleop(follow_me)
-    try:
-        while(True):
-            rclpy.spin_once(follow_me)
-            rclpy.spin_once(control)
-    except Exception as e:
-        traceback.print_exc()
-    finally:
-        follow_me.stop_follow_me()
-        follow_me.destroy_node()
-        rclpy.shutdown    
+    # follow_me = fm.Recovery_data()
+    # nav_goal = ng.Navigation_goal()
+    # recup_pos=rp.Initial_position()
+    # control=controller.JoyTeleop(follow_me)
+    # try:
+    #     while(True):
+    #         rclpy.spin_once(follow_me)
+    #         rclpy.spin_once(control)
+    # except Exception as e:
+    #     traceback.print_exc()
+    # finally:
+    #     follow_me.stop_follow_me()
+    #     follow_me.destroy_node()
+    #     rclpy.shutdown    
     
     #recup position
     # recup_pos=rp.Initial_position()
