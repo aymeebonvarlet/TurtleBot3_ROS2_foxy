@@ -1,6 +1,7 @@
 import sys
 
 from matplotlib import scale
+import os
 
 import geometry_msgs.msg
 import rclpy
@@ -126,6 +127,7 @@ class JoyTeleop(Node):
             elif event.type == pygame.JOYAXISMOTION:
                     if self.j.get_axis(4)>0:
                         self.follow_me_node.active = True
+                        os.system("cd Desktop/sons\ turtlpute/ && play FOLLOW_MEEEEE.wav")
                     if self.j.get_axis(5)>0:
                         self.follow_me_node.active = False
             else:
