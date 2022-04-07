@@ -35,6 +35,7 @@ setup(
                 'main_naviguation_goal = nav2_simple_commander.main_naviguation_goal',
                 'follow_me = nav2_simple_commander.follow_me',
                 'main= nav2_simple_commander.main:main',
+                'controller= nav2_simple_commander/controller:controller',
         ],
     },
 )

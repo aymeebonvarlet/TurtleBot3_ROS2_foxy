@@ -1,11 +1,16 @@
 import nav2_simple_commander.working_on_foxy as wf
-
-
 import numpy as np # Scientific computing library for Python
- 
- #fonction qui permet d'obtenir les valeurs quaternion pour la rotation
-def _get_quaternion_from_euler(roll, pitch, yaw):
-  """
+from rclpy.node import Node
+import nav2_simple_commander.constants as c 
+
+class Navigation_goal(Node):
+  def __init__(self):
+    super().__init__('Navigation_goal')
+    self.log=self.get_logger()
+    self.log.set_level(c.log_level)
+  
+  def _get_quaternion_from_euler(self,roll, pitch, yaw):
+    """
   Convert an Euler angle to a quaternion.
    
   Input
@@ -16,20 +21,17 @@ def _get_quaternion_from_euler(roll, pitch, yaw):
   Output
     :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
   """
-  qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
-  qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
-  qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
-  qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
- 
-  return [qx, qy, qz, qw]
-
-def navigation_goal(x,y,theta):
-    #On tourne que sur l'axe yaw, donc roll=pitch=0.0
-    t=_get_quaternion_from_euler(roll=0.0,pitch=0.0,yaw=theta)
-    qx=t[0]
-    qy=t[1]
-    qz=t[2]
-    qw=t[3]
+    self.qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+    self.qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
+    self.qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
+    self.qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+  
     
+
+  def navigation_goal(self, x,y,theta):
+    self.log.info("Début du navigation goal\n")
+    #On tourne que sur l'axe yaw, donc roll=pitch=0.0
+    self._get_quaternion_from_euler(roll=0.0,pitch=0.0,yaw=theta)
     navigator = wf.BasicNavigatorFoxy()
-    navigator.applicate_coor(coor=[x,y],quaternion_x=qx, quaternion_y=qy, quaternion_w=qw,quaternion_z=qz)
+    navigator.applicate_coor(coor=[x,y],quaternion_x=self.qx, quaternion_y=self.qy, quaternion_w=self.qw,quaternion_z=self.qz)
+    self.log.info("Nous sommes arrivés à destination\n")
