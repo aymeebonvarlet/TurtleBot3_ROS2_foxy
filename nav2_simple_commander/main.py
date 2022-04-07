@@ -37,15 +37,13 @@ def main():
     # #controller
     
     nav_goal = ng.Navigation_goal()
-    recup_pos=rp.Recup_pos()
     follow_me = fm.Recovery_data()
-    control=controller.JoyTeleop(follow_me, recup_pos, nav_goal)
+    control=controller.JoyTeleop(follow_me, nav_goal)
     try:
         while(True):
             #rclpy.spin_once(recup_pos)
             rclpy.spin_once(follow_me)
             rclpy.spin_once(control)
-            rclpy.spin_once(recup_pos)
     except Exception as e:
         traceback.print_exc()
     finally:

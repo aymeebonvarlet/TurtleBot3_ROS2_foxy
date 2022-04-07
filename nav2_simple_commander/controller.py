@@ -16,6 +16,8 @@ import sys
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import nav2_simple_commander.follow_me as fm
 import nav2_simple_commander.constants as c
+from geometry_msgs.msg import PoseWithCovarianceStamped
+from rclpy.qos import qos_profile_sensor_data
 
 
 msg = """
@@ -54,16 +56,18 @@ def sign(x):
 
 
 class JoyTeleop(Node):
-    def __init__(self, follow_me_node,recup_pos_node, nav_goal_node):
+    def __init__(self, follow_me_node,nav_goal_node):
         super().__init__('Manette')
-        self.get_logger().info("Début du programme avec la manette!")
+        self.log=self.get_logger()
+        self.log.set_level(c.log_level)
+        self.log.info("Début du programme avec la manette!")
         pygame.init()
         pygame.joystick.init()
         self.nb_joy = pygame.joystick.get_count()
         if self.nb_joy < 1:
-            self.get_logger().error("Pas de manette detectée.")
+            self.log.error("Pas de manette detectée.")
             self.emergency_shutdown()
-        self.get_logger().info("nb joysticks: {}".format(self.nb_joy))
+        self.log.info("nb joysticks: {}".format(self.nb_joy))
         self.j = pygame.joystick.Joystick(0)
         self.nb_hat = self.j.get_numhats()
         self.lin_speed_ratio = 0.2
@@ -73,19 +77,41 @@ class JoyTeleop(Node):
         self.pub = self.create_publisher(
             geometry_msgs.msg.Twist, 'cmd_vel', 10)
         self.create_timer(0.01, self.main_tick)
-        self.get_logger().info(msg)
         self.follow_me_node = follow_me_node
-        self.recup_pos_node = recup_pos_node
         self.nav_goal_node = nav_goal_node
         self.t=time.time()
         self.prev_t=time.time()
         self.tmp=0
         self.active_fm=False
         self.active_ng=False
+        self.amcl_sub = self.create_subscription(
+            PoseWithCovarianceStamped,
+            '/amcl_pose',
+            self._callback_amcl,
+            qos_profile_sensor_data)
+        self.amcl_sub
         
-
+        
+    def _callback_amcl(self, msg):
+        # if not self.activate:
+        #     return 
+        self.position=msg.pose.pose.position
+        self.x= self.position.x
+        self.y= self.position.y
+        self.orientation=msg.pose.pose.orientation
+        self.qz= self.orientation.z
+        self.qw= self.orientation.w
+        # self.log.debug("x= " + str(self.x) + '\n')
+        # self.log.debug("y= " + str(self.y) + '\n')
+        # self.log.debug("qz= " + str(self.qz) + '\n')
+        # self.log.debug("qw= " + str(self.qw) + '\n')
+        self.afficher_position()
+        
+    def afficher_position(self):
+        self.log.info("x= " + str(self.x) + " y= " + str(self.y))
+        
     def emergency_shutdown(self):
-        self.get_logger().warn("Arrêt d'urgence du robot!")
+        self.log.warn("Arrêt d'urgence du robot!")
         while True:
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = 0.0
@@ -103,30 +129,31 @@ class JoyTeleop(Node):
                 self.emergency_shutdown()
             elif event.type == pygame.JOYBUTTONDOWN:
                 if self.j.get_button(1):
-                    self.get_logger().warn("Pressed emergency stop!")
+                    self.log.warn("Pressed emergency stop!")
                     self.emergency_shutdown()
                 if self.j.get_button(7):
                     self.mode_exam()
             elif event.type == pygame.JOYHATMOTION:
                 if self.j.get_hat(0)==(0, 1): # fleche haut    
                     self.lin_speed_ratio = min(1.0, self.lin_speed_ratio+0.05)
-                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.log.info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)==(1, 0):  # fleche droite
                     self.rot_speed_ratio = min(1.0, self.rot_speed_ratio+0.05)
-                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.log.info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)== (0, -1):  # fleche gauche
                     self.lin_speed_ratio = max(0.0, self.lin_speed_ratio-0.05)
-                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.log.info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
                 if self.j.get_hat(0)==(-1, 0):  # fleche bas
                     self.rot_speed_ratio = max(0.0, self.rot_speed_ratio-0.05)
-                    self.get_logger().info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
+                    self.log.info("max translational speed: {:.1f}%, max rotational speed: {:.1f}%".format(
                         self.lin_speed_ratio*100, self.rot_speed_ratio*100))
             elif event.type == pygame.JOYAXISMOTION:
                     if self.j.get_axis(4)>0:
                         self.follow_me_node.active = True
+                        self.log.info(" Follow me : {}".format(self.follow_me_node.active))
                         os.system("cd Desktop/sons\ turtlpute/ && play FOLLOW_MEEEEE.wav")
                     if self.j.get_axis(5)>0:
                         self.follow_me_node.active = False
@@ -134,21 +161,27 @@ class JoyTeleop(Node):
                 pass
 
         if self.nb_joy != pygame.joystick.get_count():
-            self.get_logger().warn("Manette déconnectée")
+            self.log.warn("Manette déconnectée")
             self.emergency_shutdown()
             
     def mode_exam(self):
-        self.get_logger().info("Début du mode examen")
-        while (not self.active_fm and not self.active_ng):
-            if not self.active_fm :
+        self.log.info("Début du mode examen")
+        self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
+        while not self.active_fm and not self.active_ng:
+            self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
+            if not self.active_fm and not self.active_ng:
+                self.log.debug('dans mode exam follow_me')
+                self.log.info(" Follow me : {}".format(self.follow_me_node.active))
+                self.log.debug("active_fm = " + str(self.active_fm) + "active_ng= " + str(self.active_ng))
                 self.follow_me_node.active =True
                 self.active_fm = True
-            if self.active_fm and not self.active_ng:
-                self.nav_goal_node.active = True
-                #self.get_logger().info("x= " + str(self.recup_pos_node.get_x()) + " y= " + str(self.recup_pos_node.get_y()))
+                
+            elif self.active_fm and not self.active_ng:
+                self.log.debug("on active le nav_goal")
+                self.nav_goal_node.navigation_goal(3.82,0.0,math.pi)
+                #self.log.info("x= " + str(self.recup_pos_node.get_x()) + " y= " + str(self.recup_pos_node.get_y()))
                 self.active_ng = True
         
-
     def rumble(self, duration):
         self.rumble_start = time.time()
         self.is_rumble = True
@@ -160,25 +193,25 @@ class JoyTeleop(Node):
         # Get the name from the OS for the controller/joystick.
         #time.sleep(1)
         name = self.j.get_name()
-        self.get_logger().info("Joystick name: {}".format(name))
+        self.log.info("Joystick name: {}".format(name))
 
         # Usually axis run in pairs, up/down for one, and left/right for
         # the other.
         axes = self.j.get_numaxes()
-        self.get_logger().info("Number of axes: {}".format(axes))
-        self.get_logger().info("nb hat : {}".format(self.nb_hat))
+        self.log.info("Number of axes: {}".format(axes))
+        self.log.info("nb hat : {}".format(self.nb_hat))
         hats = self.j.get_hat(0)
-        self.get_logger().info("current hat : {}".format(hats))
+        self.log.info("current hat : {}".format(hats))
         for i in range(axes):
             axis = self.j.get_axis(i)
-            self.get_logger().info("Axis {} value: {:>6.3f}".format(i, axis))
+            self.log.info("Axis {} value: {:>6.3f}".format(i, axis))
 
         buttons = self.j.get_numbuttons()
-        self.get_logger().info("Number of buttons: {}".format(buttons))
+        self.log.info("Number of buttons: {}".format(buttons))
 
         for i in range(buttons):
             button = self.j.get_button(i)
-            self.get_logger().info("Button {:>2} value: {}".format(i, button))
+            self.log.info("Button {:>2} value: {}".format(i, button))
 
     def speeds_from_joystick(self):
         cycle_max_t = self.lin_speed_ratio  # 0.2*factor
@@ -203,7 +236,8 @@ class JoyTeleop(Node):
 
     def main_tick(self):
         self.tick_controller()
-        if not self.follow_me_node.active and not self.nav_goal_node.active and not self.recup_pos_node.activate:
+        if not self.follow_me_node.active and not self.active_ng:
+            self.log.debug("la manette à la main")
             x, y, theta = self.speeds_from_joystick()
             twist = geometry_msgs.msg.Twist()
             twist.linear.x = x
@@ -214,36 +248,9 @@ class JoyTeleop(Node):
             twist.angular.z = theta
             self.pub.publish(twist)
             self.prev_t = time.time()
-            self.get_logger().info("\nx_vel: {:.1f}%, y_vel: {:.1f}%, theta_vel: {:.1f}%.\nMax lin_vel: {:.1f}%, max rot_vel: {:.1f}%".format(
-             x*100, y*100, theta*100, self.lin_speed_ratio*100, self.rot_speed_ratio*100))
-            # self.prev_t=self.t
-            # self.t=time.time()
-            # dt=self.t-self.prev_t
-            # f=0
-            # if dt!= 0: theta
         else:
             x, y, theta = -0.01,-0.01,-0.01
         
-        self.get_logger().info(" Follow me : {}".format(self.follow_me_node.active))
+        #self.log.debug(" Follow me : {}".format(self.follow_me_node.active))
+        
             #self.print_controller()
-
-
-# def main():
-#     rclpy.init()
-#     node_2 = fm.Recovery_data()
-#     node = JoyTeleop(node_2)
-    # rclpy.init()
-#         #rclpy.spin(node)
-#     except Exception as e:
-#         traceback.print_exc()
-#     finally:
-#         node.emergency_shutdown()
-#         node.destroy_node()
-#         rclpy.shutdown()
-    
-
-
-
-# if __name__ == '__main__':
-#     main()
-    # rclpy.init()

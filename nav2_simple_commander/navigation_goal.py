@@ -8,7 +8,6 @@ class Navigation_goal(Node):
     super().__init__('Navigation_goal')
     self.log=self.get_logger()
     self.log.set_level(c.log_level)
-    self.active=False
   
   def _get_quaternion_from_euler(self,roll, pitch, yaw):
     """
@@ -30,11 +29,11 @@ class Navigation_goal(Node):
     
 
   def navigation_goal(self, x,y,theta):
-    if not self.active:
-      return 
     self.log.info("Début du navigation goal\n")
     #On tourne que sur l'axe yaw, donc roll=pitch=0.0
     self._get_quaternion_from_euler(roll=0.0,pitch=0.0,yaw=theta)
     navigator = wf.BasicNavigatorFoxy()
     navigator.applicate_coor(coor=[x,y],quaternion_x=self.qx, quaternion_y=self.qy, quaternion_w=self.qw,quaternion_z=self.qz)
     self.log.info("Nous sommes arrivés à destination\n")
+    self.active=False
+    return
