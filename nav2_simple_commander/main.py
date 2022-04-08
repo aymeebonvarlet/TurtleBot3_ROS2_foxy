@@ -24,33 +24,34 @@ def main():
     # nav_goal.navigation_goal(x=0.5,y=1.0,theta=math.pi)
 
     #follow_me
-    # follow_me = fm.Recovery_data()
-    # try:
-    #     rclpy.spin(follow_me)
-    # except Exception as e:
-    #     traceback.print_exc()
-    # finally:
-    #     follow_me.stop_follow_me()
-    #     follow_me.destroy_node()
-    #     rclpy.shutdown()
-        
-    # #controller
-    
-    nav_goal = ng.Navigation_goal()
     follow_me = fm.Recovery_data()
-    control=controller.JoyTeleop(follow_me, nav_goal)
     try:
-        while(True):
-            print("dans le while")
-            #rclpy.spin_once(recup_pos)
-            rclpy.spin_once(follow_me)
-            rclpy.spin_once(control)
+        follow_me.active=True
+        rclpy.spin(follow_me)
     except Exception as e:
         traceback.print_exc()
     finally:
         follow_me.stop_follow_me()
         follow_me.destroy_node()
-        rclpy.shutdown    
+        rclpy.shutdown()
+        
+    # #controller
+    
+    # nav_goal = ng.Navigation_goal()
+    # follow_me = fm.Recovery_data()
+    # control=controller.JoyTeleop(follow_me, nav_goal)
+    # try:
+    #     while(True):
+    #         print("dans le while")
+    #         #rclpy.spin_once(recup_pos)
+    #         rclpy.spin_once(follow_me)
+    #         rclpy.spin_once(control)
+    # except Exception as e:
+    #     traceback.print_exc()
+    # finally:
+    #     follow_me.stop_follow_me()
+    #     follow_me.destroy_node()
+    #     rclpy.shutdown    
     
     #recup position
     # recup_pos=rp.Initial_position()

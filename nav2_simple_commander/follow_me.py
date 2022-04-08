@@ -110,7 +110,7 @@ class Recovery_data(Node):
             self.x_goal=(self.x_feet-self.x_bary)
             self.y_goal=-(self.y_bary-self.y_feet)
             self.log.debug("stop timer= "+ str(self.tmp))
-            if self.x_goal < c.diff_bary_feet and self.y_goal < c.diff_bary_feet: #si les barycentres sont toujours égaux
+            if -c.diff_bary_feet<self.x_goal < c.diff_bary_feet and -c.diff_bary_feet<self.y_goal < c.diff_bary_feet: #si les barycentres sont toujours égaux
                 self.log.debug("pas de mvt détectée")
                 self.tmp+=1
                 self.stop_move()
