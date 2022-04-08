@@ -26,6 +26,8 @@ Si l'on bouge le joystick droit cela permet d'activer :
 - Puis après avoir atteint la position le robot ira à la position que nous aurons définie en (x,y,theta).
 - Fin du programme -> on rend la main à la manette
 
+voici une vidéo du résultat final : https://www.youtube.com/watch?v=ICJzIhcpE1s
+
 ---
 
 ## EXECUTION
