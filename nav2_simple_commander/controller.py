@@ -174,7 +174,7 @@ class JoyTeleop(Node):
             #passage en nav goal
         if self.follow_me_node.finish is True:
             self.log.warning("Début du nav goal")
-            self.nav_goal_node.navigation_goal(1.32,2.26,math.pi)
+            self.nav_goal_node.navigation_goal(9.27,-8.86,math.pi)
         
     def rumble(self, duration):
         self.rumble_start = time.time()
